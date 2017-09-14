@@ -62,7 +62,7 @@
         </Grid.ColumnDefinitions>
         <Grid Visibility="{Binding IsImageSelected, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Grid.Column="0" Background="#d0cece">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" >
-                <Image Source="Icons\open_f.png" Height="169"/>
+                <Image Source="..\Icons\open_f.png" Height="169"/>
                 <TextBlock FontSize="16" Foreground="Black" Text="Для начала работы откройте изображение" Height="44"/>
             </StackPanel>
             <!---->
@@ -71,22 +71,22 @@
         <StackPanel Background="#b3c0d6" Grid.Column="1" Orientation="Vertical">
             <Button Command="{Binding OpenCommand}" ToolTip="Открыть" Content="Open" Style="{StaticResource ButtonSize}" HorizontalAlignment="Stretch" MinWidth="98" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
                 <Button.Resources>
-                    <ImageSource x:Key="Img">Icons\open_f.png</ImageSource>
+                    <ImageSource x:Key="Img">..\Icons\open_f.png</ImageSource>
                 </Button.Resources>
             </Button>
             <Button ToolTip="Сохранить" Content="Save" Style="{StaticResource ButtonSize}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="98">
                 <Button.Resources>
-                    <ImageSource x:Key="Img">Icons\save_f.png</ImageSource>
+                    <ImageSource x:Key="Img">..\Icons\save_f.png</ImageSource>
                 </Button.Resources>
             </Button>
             <Button ToolTip="Фильтр Собеля" Content="Sobel filter" Style="{StaticResource ButtonSize}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="98">
                 <Button.Resources>
-                    <ImageSource x:Key="Img">Icons\sobel_f.png</ImageSource>
+                    <ImageSource x:Key="Img">..\Icons\sobel_f.png</ImageSource>
                 </Button.Resources>
             </Button>
             <Button ToolTip="Размытие по Гаусу" Content="Gaus blur" Style="{StaticResource ButtonSize}" HorizontalAlignment="Stretch" MinWidth="98" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
                 <Button.Resources>
-                    <ImageSource x:Key="Img">Icons\burn_f.png</ImageSource>
+                    <ImageSource x:Key="Img">..\Icons\burn_f.png</ImageSource>
                 </Button.Resources>
             </Button>
         </StackPanel>
