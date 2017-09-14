@@ -73,14 +73,21 @@ namespace Filterinqer
             if (string.IsNullOrEmpty(filePath))
                 return;
 
-            SelectedFile = filePath;
+            try
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(filePath);
+                bitmap.EndInit();
 
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(filePath);
-            bitmap.EndInit();
-            SelectedImageSource = bitmap;
-            IsImageSelected = true;
+                SelectedFile = filePath;
+                SelectedImageSource = bitmap;
+                IsImageSelected = true;
+            }
+            catch (NotSupportedException e)
+            {
+                throw new NotSupportedException(BAD_IMAGE_FORMAT, e);
+            }
         }
 
         public void SaveProcess()
@@ -91,7 +98,7 @@ namespace Filterinqer
             else if (string.Equals(Path.GetExtension(SelectedFile), ".jpg", StringComparison.InvariantCultureIgnoreCase))
                 encoder = new JpegBitmapEncoder();
             else
-                throw new InvalidOperationException(BAD_IMAGE_FORMAT);
+                throw new NotSupportedException(BAD_IMAGE_FORMAT);
 
             encoder.Frames.Add(BitmapFrame.Create(SelectedImageSource));
 
