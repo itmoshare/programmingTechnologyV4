@@ -115,8 +115,7 @@ namespace Filterinqer
             var saveFileDialog = new SaveFileDialog()
             {
                 FileName = $"{Path.GetFileNameWithoutExtension(SelectedFile)}_filtered{Path.GetExtension(SelectedFile)}",
-                DefaultExt = ".png",
-                Filter = "PNG |*.png"
+                Filter = "PNG or JPG|*.png;*.jpg"
             };
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 return saveFileDialog.FileName;
