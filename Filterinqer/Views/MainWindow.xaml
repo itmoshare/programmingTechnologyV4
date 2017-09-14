@@ -74,7 +74,7 @@
                     <ImageSource x:Key="Img">..\Icons\open_f.png</ImageSource>
                 </Button.Resources>
             </Button>
-            <Button ToolTip="Сохранить" Content="Save" Style="{StaticResource ButtonSize}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="98">
+            <Button Command="{Binding SaveCommand}" ToolTip="Сохранить" Content="Save" Style="{StaticResource ButtonSize}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="98">
                 <Button.Resources>
                     <ImageSource x:Key="Img">..\Icons\save_f.png</ImageSource>
                 </Button.Resources>
