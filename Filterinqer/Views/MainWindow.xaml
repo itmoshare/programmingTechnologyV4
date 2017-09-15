@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Filterinqer"
         mc:Ignorable="d"
         Title="MainWindow" Height="436" Width="759"
-        DataContext="MainViewModel">
+        DataContext="MainViewModel"
+        KeyDown="Window_KeyDown">
     <Window.Resources>
 
         <Style x:Key="ButtonSize" TargetType="Button">
@@ -33,27 +34,7 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="ToolbarNoStyle" TargetType="{x:Type ToolBar}">
-            <Setter Property="SnapsToDevicePixels" Value="true"/>
-            <Setter Property="OverridesDefaultStyle" Value="true"/>
-            <Setter Property="Background" Value="#b3c0d6"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ToolBar}">
-                        <DockPanel >
-                            <ToggleButton Visibility="Collapsed"  DockPanel.Dock="Right" IsEnabled="False" IsChecked="False" ClickMode="Press">
-                                <Popup x:Name="OverflowPopup" AllowsTransparency="true" Placement="Bottom" IsOpen="{Binding Path=IsOverflowOpen,RelativeSource={RelativeSource TemplatedParent}}" StaysOpen="false" Focusable="false" PopupAnimation="Slide">
-                                    <Border x:Name="DropDownBorder" Background="pink" BorderThickness="1" BorderBrush="pink">
-                                        <ToolBarOverflowPanel x:Name="PART_ToolBarOverflowPanel" Margin="2" WrapWidth="200" Focusable="true"  FocusVisualStyle="{x:Null}" KeyboardNavigation.TabNavigation="Cycle" KeyboardNavigation.DirectionalNavigation="Cycle" Visibility="Collapsed"/>
-                                    </Border>
-                                </Popup>
-                            </ToggleButton>
-                            <ToolBarPanel x:Name="PART_ToolBarPanel" IsItemsHost="true" Margin="0,1,2,2"/>
-                        </DockPanel>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+      
     </Window.Resources>
     <Grid Margin="0,0,0,-2">
         <Grid.ColumnDefinitions>
@@ -79,12 +60,12 @@
                     <ImageSource x:Key="Img">..\Icons\save_f.png</ImageSource>
                 </Button.Resources>
             </Button>
-            <Button ToolTip="Фильтр Собеля" Content="Sobel filter" Style="{StaticResource ButtonSize}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="98">
+            <Button ToolTip="Фильтр Собеля" Command="{Binding SobelCommand}" Content="Sobel filter" Style="{StaticResource ButtonSize}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="98">
                 <Button.Resources>
                     <ImageSource x:Key="Img">..\Icons\sobel_f.png</ImageSource>
                 </Button.Resources>
             </Button>
-            <Button ToolTip="Размытие по Гаусу" Content="Gaus blur" Style="{StaticResource ButtonSize}" HorizontalAlignment="Stretch" MinWidth="98" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
+            <Button ToolTip="Размытие по Гаусу" Command="{Binding GausCommand}" Content="Gaus blur" Style="{StaticResource ButtonSize}" HorizontalAlignment="Stretch" MinWidth="98" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
                 <Button.Resources>
                     <ImageSource x:Key="Img">..\Icons\burn_f.png</ImageSource>
                 </Button.Resources>

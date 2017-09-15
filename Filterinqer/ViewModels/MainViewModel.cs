@@ -6,28 +6,40 @@ using System.Text;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.IO;
+using Emgu.CV;
+using Emgu.CV.Structure;
+using System.Drawing;
+using Filterinqer.Helpers;
 
 namespace Filterinqer
 {
     public class MainViewModel : BaseViewModel
     {
-        private const string BAD_IMAGE_FORMAT = "Возможно обработать изображение только форматов .png и .jpg.";
+        private const string BAD_IMAGE_FORMAT = "Возможно обработать изображение только форматов .png, .jpg или .bmp.";
 
         private ICommand _openCommand;
         private ICommand _saveCommand;
         private ICommand _sobelCommand;
         private ICommand _gausCommand;
+        private ICommand _undoCommand;
 
         private string _selectedFilePath;
         private BitmapImage _selectedImageSource;
         private bool _isImageSelected;
+
+        private Stack<BitmapImage> _images;
+
+        public MainViewModel()
+        {
+            _images = new Stack<BitmapImage>();
+        }
 
         public ICommand OpenCommand
         {
             get
             {
                 return _openCommand ?? (_openCommand = 
-                    new Command((param) => true, OpenFileProcess));
+                    new Command((param) => true, OpenFileAction));
             } 
         }
         public ICommand SaveCommand
@@ -35,12 +47,46 @@ namespace Filterinqer
             get
             {
                 return _saveCommand ?? (_saveCommand =
-                    new Command((param) => IsImageSelected, SaveProcess));
+                    new Command((param) => IsImageSelected, SaveAction));
             }
         }
 
-        public ICommand SobelCommand { get => _sobelCommand; }
-        public ICommand GausCommand { get => _gausCommand; }
+        public ICommand SobelCommand
+        {
+            get
+            {
+                return _sobelCommand ?? (_sobelCommand =
+                    new Command((param) => IsImageSelected, () =>
+                    {
+                        SelectedImageSource = ApplySobel(SelectedImageSource);
+                    }));
+            }
+        }
+
+        public ICommand GausCommand
+        {
+            get
+            {
+                return _gausCommand ?? (_gausCommand =
+                    new Command((param) => IsImageSelected, () =>
+                    {
+                        SelectedImageSource = ApplyGaus(SelectedImageSource);
+                    }));
+            }
+        }
+
+        public ICommand UndoCommand
+        {
+            get
+            {
+                return _undoCommand ?? (_undoCommand =
+                    new Command((param) => _images.Count > 1, () =>
+                    {
+                        _images.Pop();
+                        SelectedImageSource = _images.Peek();
+                    }));
+            }
+        }
 
         public string SelectedFile { get => _selectedFilePath;
             set
@@ -67,7 +113,7 @@ namespace Filterinqer
         }
 
 
-        public void OpenFileProcess()
+        public void OpenFileAction()
         {
             var filePath = ChooseFile();
             if (string.IsNullOrEmpty(filePath))
@@ -83,6 +129,8 @@ namespace Filterinqer
                 SelectedFile = filePath;
                 SelectedImageSource = bitmap;
                 IsImageSelected = true;
+                _images.Clear();
+                _images.Push(bitmap);
             }
             catch (NotSupportedException e)
             {
@@ -90,7 +138,7 @@ namespace Filterinqer
             }
         }
 
-        public void SaveProcess()
+        public void SaveAction()
         {
             BitmapEncoder encoder;
             if (string.Equals(Path.GetExtension(SelectedFile), ".png", StringComparison.InvariantCultureIgnoreCase))
@@ -98,7 +146,7 @@ namespace Filterinqer
             else if (string.Equals(Path.GetExtension(SelectedFile), ".jpg", StringComparison.InvariantCultureIgnoreCase))
                 encoder = new JpegBitmapEncoder();
             else
-                throw new NotSupportedException(BAD_IMAGE_FORMAT);
+                encoder = new BmpBitmapEncoder();
 
             encoder.Frames.Add(BitmapFrame.Create(SelectedImageSource));
 
@@ -108,6 +156,24 @@ namespace Filterinqer
 
             using (var fileStream = new FileStream(savePath, FileMode.OpenOrCreate))
                 encoder.Save(fileStream);
+        }
+
+        private BitmapImage ApplySobel(BitmapImage image)
+        {
+            var sobeled = image.ToCVImage().Sobel(1, 0, 3);
+            var result = sobeled.ToBitmap().ToBitmapImage();
+            _images.Push(result);
+            return result;
+        }
+
+        private BitmapImage ApplyGaus(BitmapImage image)
+        {
+            var gaused = new Image<Bgr, byte>(image.ToBitmap());
+            var cvImage = image.ToCVImage();
+            CvInvoke.GaussianBlur(cvImage, gaused, new Size { Height = 25, Width = 25 }, 0, 0);
+            var result = gaused.ToBitmap().ToBitmapImage();
+            _images.Push(result);
+            return result;
         }
 
         private string GetSaveFilePath()
@@ -127,7 +193,7 @@ namespace Filterinqer
             var openFileDialog = new OpenFileDialog()
             {
                 Multiselect = false,
-                Filter = "Image files (*.png, *.jpg)|*.png;*.jpg|All files (*.*)|*.*",
+                Filter = "Image files (*.png, *.jpg, *.bmp)|*.png;*.jpg;*.bmp|All files (*.*)|*.*",
             };
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 return openFileDialog.FileName;

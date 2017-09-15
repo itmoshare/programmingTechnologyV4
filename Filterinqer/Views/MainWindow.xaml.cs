@@ -24,5 +24,12 @@ namespace Filterinqer
             InitializeComponent();
             DataContext = new MainViewModel();
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            var vm = (MainViewModel)DataContext;
+            if (e.Key == Key.Z && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control && vm.UndoCommand.CanExecute(null))
+                vm.UndoCommand.Execute(null);
+        }
     }
 }
