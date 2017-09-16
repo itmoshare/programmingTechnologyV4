@@ -27,11 +27,11 @@ namespace Filterinqer
         private BitmapImage _selectedImageSource;
         private bool _isImageSelected;
 
-        private Stack<BitmapImage> _images;
+        private FixedSizedStack<BitmapImage> _images;
 
         public MainViewModel()
         {
-            _images = new Stack<BitmapImage>();
+            _images = new FixedSizedStack<BitmapImage>(20);
         }
 
         public ICommand OpenCommand

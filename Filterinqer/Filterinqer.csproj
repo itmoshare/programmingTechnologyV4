@@ -80,6 +80,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\FixedSizedStack.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
