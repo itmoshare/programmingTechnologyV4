@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Filterinqer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="436" Width="759"
+        Title="Filterinqer" Height="436" Width="759"
         DataContext="MainViewModel"
         KeyDown="Window_KeyDown">
     <Window.Resources>
@@ -36,7 +36,7 @@
 
       
     </Window.Resources>
-    <Grid Margin="0,0,0,-2">
+    <Grid Margin="0,0,0,-2" Background="#d0cece">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="649*"/>
             <ColumnDefinition Width="102"/>
