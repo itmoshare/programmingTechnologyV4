@@ -31,5 +31,11 @@ namespace Filterinqer
             if (e.Key == Key.Z && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control && vm.UndoCommand.CanExecute(null))
                 vm.UndoCommand.Execute(null);
         }
+
+        private void DoubleAnimation_Completed(object sender, EventArgs e)
+        {
+            var vm = (MainViewModel)DataContext;
+            vm.IsAfterAction = false;
+        }
     }
 }

@@ -28,6 +28,7 @@ namespace Filterinqer
         private bool _isImageSelected;
 
         private FixedSizedStack<BitmapImage> _images;
+        private bool _isAfterAction;
 
         public MainViewModel()
         {
@@ -59,6 +60,7 @@ namespace Filterinqer
                     new Command((param) => IsImageSelected, () =>
                     {
                         SelectedImageSource = ApplySobel(SelectedImageSource);
+                        IsAfterAction = true;
                     }));
             }
         }
@@ -71,6 +73,7 @@ namespace Filterinqer
                     new Command((param) => IsImageSelected, () =>
                     {
                         SelectedImageSource = ApplyGaus(SelectedImageSource);
+                        IsAfterAction = true;
                     }));
             }
         }
@@ -93,6 +96,15 @@ namespace Filterinqer
             {
                 _selectedFilePath = value;
                 NotifyPropertyChanged(nameof(SelectedFile));
+            }
+        }
+
+        public bool IsAfterAction { get => _isAfterAction;
+            set
+            {
+                _isAfterAction = value;
+                NotifyPropertyChanged(nameof(IsAfterAction));
+                _isAfterAction = false;
             }
         }
 

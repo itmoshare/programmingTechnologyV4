@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Filterinqer" Height="436" Width="759"
         DataContext="MainViewModel"
-        KeyDown="Window_KeyDown">
+        KeyDown="Window_KeyDown" MinWidth="759" MinHeight="436">
     <Window.Resources>
 
         <Style x:Key="ButtonSize" TargetType="Button">
@@ -34,7 +34,34 @@
             </Style.Triggers>
         </Style>
 
-      
+        <Style x:Key="RoundTextBox" TargetType="TextBox">
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Storyboard x:Key="FadeInOut">
+            <DoubleAnimation BeginTime="0:0:0.5" Storyboard.TargetProperty="Opacity"
+                             From="0.0" To="0.6" Duration="0:0:1.0"/>
+            <DoubleAnimation x:Name="fadeOut" BeginTime="0:0:3.0" Storyboard.TargetProperty="Opacity"
+                             From="0.6" To="0.0" Duration="0:0:0.5" Completed="DoubleAnimation_Completed"/>
+        </Storyboard>
+
+        <Style TargetType="{x:Type FrameworkElement}" x:Key="animateFadeOut">
+            <Style.Triggers>
+                <Trigger Property="Visibility" Value="Visible">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard Storyboard="{StaticResource FadeInOut}"/>
+                    </Trigger.EnterActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
     </Window.Resources>
     <Grid Margin="0,0,0,-2" Background="#d0cece">
         <Grid.ColumnDefinitions>
@@ -71,7 +98,17 @@
                 </Button.Resources>
             </Button>
         </StackPanel>
-
-
-    </Grid>
+        
+        <StackPanel Style="{StaticResource animateFadeOut}" Visibility="{Binding IsAfterAction, Converter={StaticResource BooleanToVisibilityConverter}}"  Height="55.242" VerticalAlignment="Bottom" Panel.ZIndex="8" Margin="0,0,0,10" HorizontalAlignment="Center" Width="217.904">
+            <Border Panel.ZIndex="8" BorderThickness="1" BorderBrush="White" CornerRadius="7"  Background="Black">
+                <StackPanel Orientation="Horizontal" Panel.ZIndex="8" Height="53.292" VerticalAlignment="Bottom" Width="215.881" Margin="0,0,0,0">
+                    <TextBox Style="{StaticResource RoundTextBox}" TextWrapping="Wrap" Text="CTRL" BorderBrush="White" Background="Black" Foreground="White" VerticalContentAlignment="Center" Panel.ZIndex="9" Height="30" VerticalAlignment="Center" Width="40.953" HorizontalContentAlignment="Center" Margin="20,14,0,9" HorizontalAlignment="Center"/> 
+                    <TextBox Style="{StaticResource RoundTextBox}" TextWrapping="Wrap" Text="+" BorderBrush="{x:Null}" Foreground="White" VerticalContentAlignment="Center" Margin="0,5,0,0" Background="Black" Panel.ZIndex="9" HorizontalAlignment="Center" Width="18.178" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox Style="{StaticResource RoundTextBox}" TextWrapping="Wrap" Text="Z" BorderBrush="White" Background="Black" Foreground="White" VerticalContentAlignment="Center" Panel.ZIndex="9" Height="30" VerticalAlignment="Center" Width="35.976" HorizontalContentAlignment="Center" Margin="0,5,0,0" HorizontalAlignment="Center"/> 
+                    <TextBox Style="{StaticResource RoundTextBox}" TextWrapping="Wrap" Text="для отмены" BorderBrush="{x:Null}" Foreground="White" VerticalContentAlignment="Center" Margin="10,5,0,0" Background="Black" Panel.ZIndex="9" HorizontalAlignment="Center" Width="76.909" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+       
+     </Grid>
 </Window>
